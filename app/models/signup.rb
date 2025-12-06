@@ -8,6 +8,7 @@ class Signup
 
   validates :email_address, format: { with: URI::MailTo::EMAIL_REGEXP }, on: :identity_creation
   validates :full_name, :identity, presence: true, on: :completion
+  validate :email_domain_allowed, on: :identity_creation
 
   def initialize(...)
     super
@@ -94,6 +95,15 @@ class Signup
         attributes[:remote_address] = Current.ip_address
         attributes[:user_agent]     = Current.user_agent
         attributes[:referrer]       = Current.referrer
+      end
+    end
+
+    def email_domain_allowed
+      return unless Fizzy.signup_domain_restricted?
+
+      domain = email_address&.split("@")&.last&.downcase
+      unless Fizzy.allowed_signup_domains.include?(domain)
+        errors.add(:email_address, "is not from an allowed domain")
       end
     end
 end

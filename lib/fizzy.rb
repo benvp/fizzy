@@ -9,6 +9,16 @@ module Fizzy
       @db_adapter ||= DbAdapter.new ENV.fetch("DATABASE_ADAPTER", saas? ? "mysql" : "sqlite")
     end
 
+    def signup_domain_restricted?
+      allowed_signup_domains.any?
+    end
+
+    def allowed_signup_domains
+      return @allowed_signup_domains if defined?(@allowed_signup_domains)
+      domains_str = ENV["ALLOWED_SIGNUP_DOMAINS"] || ""
+      @allowed_signup_domains = domains_str.split(",").map(&:strip).reject(&:empty?)
+    end
+
     def configure_bundle
       if saas?
         ENV["BUNDLE_GEMFILE"] = "Gemfile.saas"
