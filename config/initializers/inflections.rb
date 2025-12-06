@@ -13,7 +13,6 @@
 # These inflection rules are supported but not enabled by default:
 ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym "SQLite"
-  inflect.acronym "SSRF"
 
   inflect.singular "quotas", "quota"
   inflect.plural "quota", "quotas"

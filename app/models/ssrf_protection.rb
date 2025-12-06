@@ -1,4 +1,4 @@
-module SSRFProtection
+module SsrfProtection
   extend self
 
   DNS_RESOLUTION_TIMEOUT = 2
