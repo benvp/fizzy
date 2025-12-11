@@ -24,11 +24,13 @@ env:
     - SECRET_KEY_BASE
     - VAPID_PUBLIC_KEY
     - VAPID_PRIVATE_KEY
+    - SMTP_ADDRESS
     - SMTP_USERNAME
     - SMTP_PASSWORD
     - ALLOWED_SIGNUP_DOMAINS
   clear:
-    MAILER_FROM_ADDRESS: fizzy@vp.solutions # The email address that Fizzy sends email from
+    MAILER_FROM_ADDRESS: fizzy@vp.solutions
+    MULTI_TENANT: false # Set to false to enable single-tenant mode
     SOLID_QUEUE_IN_PUMA: true # Run background jobs in the app container
 
 #-- General configuration --#

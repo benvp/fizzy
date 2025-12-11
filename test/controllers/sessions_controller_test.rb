@@ -36,6 +36,21 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "create for a new user when single tenant mode already has a tenant" do
+    with_multi_tenant_mode(false) do
+      untenanted do
+        assert_no_difference -> { MagicLink.count } do
+          assert_no_difference -> { Identity.count } do
+            post session_path,
+              params: { email_address: "nonexistent-#{SecureRandom.hex(6)}@example.com" }
+          end
+        end
+
+        assert_redirected_to session_magic_link_path
+      end
+    end
+  end
+
   test "create with invalid email address" do
     # Avoid Sentry exceptions when attackers try to stuff invalid emails. The browser performs form
     # field validation that should normally prevent this from occurring, so I'm not worried about
