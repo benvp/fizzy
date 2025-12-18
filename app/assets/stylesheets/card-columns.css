@@ -463,6 +463,7 @@
 
     .card__steps {
       display: flex;
+      --column-gap: 0.8ch;
     }
 
     .card__tags {

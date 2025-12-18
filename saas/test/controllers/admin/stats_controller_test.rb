@@ -5,7 +5,7 @@ class Admin::StatsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :david
 
     untenanted do
-      get admin_stats_url
+      get saas.admin_stats_path
     end
 
     assert_response :success
@@ -15,7 +15,7 @@ class Admin::StatsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :jz
 
     untenanted do
-      get admin_stats_url
+      get saas.admin_stats_path
     end
 
     assert_response :forbidden
