@@ -40,4 +40,16 @@ class Card::LimitedCreationTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     assert Card.last.drafted?
   end
+
+  test "cannot create cards via JSON when storage limit exceeded" do
+    sign_in_as :mike
+
+    Account.any_instance.stubs(:bytes_used).returns(1.1.gigabytes)
+
+    assert_no_difference -> { Card.count } do
+      post board_cards_path(boards(:miltons_wish_list), script_name: accounts(:initech).slug, format: :json)
+    end
+
+    assert_response :forbidden
+  end
 end

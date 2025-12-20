@@ -461,9 +461,24 @@
       font-size: clamp(0.6rem, 0.85cqi, 100px);
     }
 
-    .card__steps {
-      display: flex;
+    .card__comments {
       --column-gap: 0.8ch;
+
+      display: flex;
+      margin-block-end: calc(var(--block-space) * -1.7);
+      margin-inline-end: calc(var(--card-padding-inline) * -0.5);
+
+      .icon {
+        --icon-size: 1.6em;
+
+        color: var(--card-color);
+      }
+    }
+
+    .card__steps {
+      --column-gap: 0.8ch;
+
+      display: flex;
     }
 
     .card__tags {

@@ -31,6 +31,10 @@
     }
   }
 
+  .settings-subscription__link {
+    color: var(--settings-subscription-text-color);
+  }
+
   .settings-subscription__notch {
     animation: wiggle 500ms ease;
     background: var(--settings-subscription-background);
@@ -39,7 +43,6 @@
     color: var(--settings-subscription-text-color);
     margin-inline: auto;
     padding: 0 0.3em 0 1.2em;
-    padding: 0.5ch 0.5ch 0.5ch 2ch;
     transform: rotate(-1deg);
 
     @media (max-width: 640px) {

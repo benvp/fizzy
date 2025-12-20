@@ -1,3 +1,5 @@
+raise LoadError, "Please install libvips" unless defined?(Vips::LIBRARY_VERSION)
+
 # Disable Openslide to prevent sqlite segfault in forked parallel workers
 # Requires libvips 8.13+
 Vips.block "VipsForeignLoadOpenslide", true if Vips.respond_to?(:block)

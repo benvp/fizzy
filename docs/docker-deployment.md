@@ -90,6 +90,15 @@ Less commonly, you might also need to set some of the following:
 
 You can find out more about all these settings in the [Rails Action Mailer documentation](https://guides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration).
 
+#### Base URL
+
+Fizzy needs to know the public URL of your instance so it can generate correct links in certain situations (like when sending emails).
+Set `BASE_URL` to the full URL where your Fizzy instance is accessible:
+
+```sh
+docker run --environment BASE_URL=https://fizzy.example.com ...
+```
+
 #### VAPID keys
 
 Fizzy can also send Web Push notifications.
@@ -114,7 +123,7 @@ Set those in the `VAPID_PRIVATE_KEY` and `VAPID_PUBLIC_KEY` environment variable
 
 #### S3 storage (optional)
 
-If you're rather that uploaded files were stored in an S3 bucket, rather than your mounted volume, you can set that up.
+If you'd prefer that uploaded files were stored in an S3 bucket rather than in your mounted volume, you can set that up.
 
 First set `ACTIVE_STORAGE_SERVICE` to `s3`.
 Then set the following as appropriate for your S3 bucket:
@@ -153,6 +162,7 @@ services:
     environment:
       - SECRET_KEY_BASE=abcdefabcdef
       - TLS_DOMAIN=fizzy.example.com
+      - BASE_URL=https://fizzy.example.com
       - MAILER_FROM_ADDRESS=fizzy@example.com
       - SMTP_ADDRESS=mail.example.com
       - SMTP_USERNAME=user

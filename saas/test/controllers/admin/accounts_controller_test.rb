@@ -34,7 +34,7 @@ class Admin::AccountsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :david
 
     untenanted do
-      patch saas.admin_account_path(accounts(:"37s").external_account_id), params: { account: { overridden_card_count: 500 } }
+      patch saas.admin_account_path(accounts(:"37s").external_account_id), params: { account: { card_count: 500 } }
       assert_redirected_to saas.edit_admin_account_path(accounts(:"37s").external_account_id)
     end
 

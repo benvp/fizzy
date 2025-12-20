@@ -269,6 +269,12 @@
     }
   }
 
+  .show-on-native {
+    body:not([data-platform~=native]) & {
+      display: none;
+    }
+  }
+
   .hide-scrollbar {
     -ms-overflow-style: none;  /* Edge */
     scrollbar-width: none; /* FF */

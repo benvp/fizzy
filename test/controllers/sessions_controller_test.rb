@@ -70,7 +70,8 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
           post session_path, params: { email_address: "not-a-valid-email" }
         end
 
-        assert_response :unprocessable_entity
+        assert_response :redirect
+        assert_redirected_to new_session_path
       end
     end
   end
@@ -83,6 +84,37 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
       assert_redirected_to new_session_path
       assert_not cookies[:session_token].present?
+    end
+  end
+
+  test "create via JSON" do
+    untenanted do
+      post session_path(format: :json), params: { email_address: identities(:david).email_address }
+      assert_response :created
+    end
+  end
+
+  test "create for a new user via JSON" do
+    new_email = "new-user-#{SecureRandom.hex(6)}@example.com"
+
+    untenanted do
+      assert_difference -> { Identity.count }, 1 do
+        assert_difference -> { MagicLink.count }, 1 do
+          post session_path(format: :json), params: { email_address: new_email }
+        end
+      end
+      assert_response :created
+      assert @response.parsed_body["pending_authentication_token"].present?
+      assert MagicLink.last.for_sign_up?
+    end
+  end
+
+  test "create with invalid email address via JSON" do
+    untenanted do
+      assert_no_difference -> { Identity.count } do
+        post session_path(format: :json), params: { email_address: "not-a-valid-email" }
+      end
+      assert_response :unprocessable_entity
     end
   end
 end

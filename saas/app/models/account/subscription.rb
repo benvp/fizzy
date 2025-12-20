@@ -11,6 +11,10 @@ class Account::Subscription < SaasRecord
     @plan ||= Plan.find(plan_key)
   end
 
+  def plan=(plan)
+    self.plan_key = plan.key
+  end
+
   def to_be_canceled?
     active? && cancel_at.present?
   end

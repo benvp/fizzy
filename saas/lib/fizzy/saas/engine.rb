@@ -10,7 +10,7 @@ module Fizzy
       Queenbee.host_app = Fizzy
 
       initializer "fizzy_saas.content_security_policy", before: :load_config_initializers do |app|
-        app.config.x.content_security_policy.form_action = "https://checkout.stripe.com"
+        app.config.x.content_security_policy.form_action = "https://checkout.stripe.com https://billing.stripe.com"
       end
 
       initializer "fizzy_saas.assets" do |app|
@@ -22,7 +22,12 @@ module Fizzy
         app.routes.prepend do
           namespace :account do
             resource :billing_portal, only: :show
-            resource :subscription
+            resource :subscription do
+              scope module: :subscriptions do
+                resource :upgrade, only: :create
+                resource :downgrade, only: :create
+              end
+            end
           end
 
           namespace :stripe do

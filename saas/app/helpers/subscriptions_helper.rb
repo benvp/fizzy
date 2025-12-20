@@ -1,6 +1,6 @@
 module SubscriptionsHelper
-  def plan_storage_limit(plan)
-    number_to_human_size(plan.storage_limit).delete(" ")
+  def storage_to_human_size(bytes)
+    number_to_human_size(bytes).delete(" ")
   end
 
   def subscription_period_end_action(subscription)
@@ -9,7 +9,7 @@ module SubscriptionsHelper
     elsif subscription.canceled?
       "Your Fizzy subscription ended on"
     else
-      "Your next payment of <b>#{ number_to_currency(subscription.next_amount_due) }</b> will be billed on".html_safe
+      "Your next payment is <b>#{ number_to_currency(subscription.next_amount_due, strip_insignificant_zeros: true) }</b> on".html_safe
     end
   end
 end
