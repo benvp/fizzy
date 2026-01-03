@@ -15,7 +15,7 @@
     --column-width-collapsed: 40px;
     --column-width-expanded: 450px;
     --progress-increment: var(--progress-max-height) / var(--progress-max-cards);
-    --progress-max-cards: 20;
+    --progress-max-cards: 15; /* should match first geared pagination page size */
     --progress-max-height: 50dvh;
 
     container-type: inline-size;
@@ -35,6 +35,7 @@
     }
 
     &:has(.cards) {
+      block-size: 100%;
       min-block-size: 20lh;
     }
 
@@ -344,6 +345,7 @@
 
       &:after {
         block-size: calc(var(--column-width-collapsed) + var(--card-count) * var(--progress-increment));
+        max-block-size: none;
         opacity: 1;
         inline-size: var(--column-width-collapsed);
       }
@@ -756,7 +758,7 @@
     --column-padding-expanded: calc(var(--column-gap) * 2);
     --column-width-collapsed: 40px;
     --progress-increment: var(--progress-max-width) / var(--progress-max-cards);
-    --progress-max-cards: 20;
+    --progress-max-cards: 15; /* should match first geared pagination page size */
     --progress-max-width: 100%;
 
     padding-inline: 3vw;

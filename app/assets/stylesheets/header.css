@@ -15,6 +15,8 @@
     max-inline-size: 100dvw;
     padding-block: calc(var(--block-space-half) + env(safe-area-inset-top)) var(--block-space-half);
     padding-inline: var(--main-padding);
+    position: relative;
+    z-index: var(--z-nav);
 
     /* Change the grid size depending on how many buttons are present */
     &:has(.header__actions > *:nth-child(1)) { --header-button-count: 1; }
@@ -23,6 +25,10 @@
 
     &:has(nav) {
       row-gap: 0;
+    }
+
+    &:has(dialog[open]) {
+      z-index: var(--z-nav-open);
     }
 
     &:has(~ #main .card-columns) {

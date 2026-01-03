@@ -22,11 +22,6 @@
     max-inline-size: 100dvw;
   }
 
-  :where(#header) {
-    position: relative;
-    z-index: var(--z-nav);
-  }
-
   :is(#header, #footer) {
     @media print {
       display: none;
