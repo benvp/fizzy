@@ -52,6 +52,16 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "edit card with invalid attachments in description" do
+    card = cards(:logo)
+    card.update! description: <<~HTML
+      <action-text-attachment sgid="gid://fizzy/Card/nonexistent" content-type="application/octet-stream"></action-text-attachment>
+    HTML
+
+    get edit_card_path(card)
+    assert_response :success
+  end
+
   test "update" do
     patch card_path(cards(:logo)), as: :turbo_stream, params: {
       card: {
@@ -151,6 +161,8 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
     assert_equal card.title, @response.parsed_body["title"]
     assert_equal card.closed?, @response.parsed_body["closed"]
     assert_equal 2, @response.parsed_body["steps"].size
+    assert_equal card_comments_url(card), @response.parsed_body["comments_url"]
+    assert_equal card_reactions_url(card), @response.parsed_body["reactions_url"]
   end
 
   test "create as JSON" do
