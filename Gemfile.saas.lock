@@ -13,7 +13,7 @@ GIT
 
 GIT
   remote: https://github.com/basecamp/console1984
-  revision: 02b1b9ee7fd7050174b6a98c2b43057553621dc4
+  revision: 23419ec8861e73f12ced75a3fc559d03f7be5854
   specs:
     console1984 (0.2.2)
       irb (~> 1.13)
@@ -628,6 +628,7 @@ GEM
       railties
       yabeda (~> 0.8)
     zeitwerk (2.7.4)
+    zip_kit (6.3.4)
 
 PLATFORMS
   aarch64-linux
@@ -678,7 +679,6 @@ DEPENDENCIES
   rouge
   rqrcode
   rubocop-rails-omakase
-  rubyzip
   selenium-webdriver
   sentry-rails
   sentry-ruby
@@ -705,6 +705,7 @@ DEPENDENCIES
   yabeda-prometheus-mmap
   yabeda-puma-plugin
   yabeda-rails
+  zip_kit
 
 BUNDLED WITH
    2.7.2
