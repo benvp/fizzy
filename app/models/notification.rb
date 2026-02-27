@@ -1,5 +1,5 @@
 class Notification < ApplicationRecord
-  include PushNotifiable
+  include Notification::Pushable
 
   belongs_to :account, default: -> { user.account }
   belongs_to :user
@@ -10,7 +10,13 @@ class Notification < ApplicationRecord
   scope :unread, -> { where(read_at: nil) }
   scope :read, -> { where.not(read_at: nil) }
   scope :ordered, -> { order(read_at: :desc, updated_at: :desc) }
-  scope :preloaded, -> { preload(:card, :creator, :account, source: [ :board, :creator, { eventable: [ :closure, :board, :assignments ] } ]) }
+  scope :preloaded, -> {
+    preload(
+      :creator, :account,
+      card: [ :board, :column, :closure, :not_now ],
+      source: [ :board, :creator, { eventable: [ :closure, :board, :assignments ] } ]
+    )
+  }
 
   before_validation :set_card
   after_create :bundle
@@ -21,6 +27,7 @@ class Notification < ApplicationRecord
   after_destroy_commit -> { broadcast_remove_to user, :notifications }
 
   delegate :notifiable_target, to: :source
+  delegate :identity, to: :user
 
   class << self
     def read_all

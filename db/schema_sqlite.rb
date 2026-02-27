@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.2].define(version: 2026_02_13_170100) do
+ActiveRecord::Schema[8.2].define(version: 2026_02_18_120000) do
   create_table "accesses", id: :uuid, force: :cascade do |t|
     t.datetime "accessed_at"
     t.uuid "account_id", null: false
@@ -42,7 +42,7 @@ ActiveRecord::Schema[8.2].define(version: 2026_02_13_170100) do
     t.uuid "account_id"
     t.datetime "completed_at"
     t.datetime "created_at", null: false
-    t.string "failure_reason"
+    t.string "failure_reason", limit: 255
     t.uuid "identity_id", null: false
     t.string "status", limit: 255, default: "pending", null: false
     t.datetime "updated_at", null: false
@@ -147,8 +147,9 @@ ActiveRecord::Schema[8.2].define(version: 2026_02_13_170100) do
     t.datetime "created_at", null: false
     t.string "key", limit: 255
     t.datetime "updated_at", null: false
-    t.index ["account_id", "key"], name: "index_board_publications_on_account_id_and_key"
+    t.index ["account_id"], name: "index_board_publications_on_account_id"
     t.index ["board_id"], name: "index_board_publications_on_board_id"
+    t.index ["key"], name: "index_board_publications_on_key", unique: true
   end
 
   create_table "boards", id: :uuid, force: :cascade do |t|
@@ -299,7 +300,7 @@ ActiveRecord::Schema[8.2].define(version: 2026_02_13_170100) do
     t.datetime "completed_at"
     t.datetime "created_at", null: false
     t.string "status", limit: 255, default: "pending", null: false
-    t.string "type"
+    t.string "type", limit: 255
     t.datetime "updated_at", null: false
     t.uuid "user_id", null: false
     t.index ["account_id"], name: "index_exports_on_account_id"
@@ -495,7 +496,7 @@ ActiveRecord::Schema[8.2].define(version: 2026_02_13_170100) do
     t.string "operation", limit: 255, null: false
     t.uuid "recordable_id"
     t.string "recordable_type", limit: 255
-    t.string "request_id"
+    t.string "request_id", limit: 255
     t.uuid "user_id"
     t.index ["account_id"], name: "index_storage_entries_on_account_id"
     t.index ["blob_id"], name: "index_storage_entries_on_blob_id"
