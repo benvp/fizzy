@@ -1,7 +1,6 @@
 GIT
   remote: https://github.com/basecamp/audits1984
-  revision: 422b8ff25820c828b7cf09aff4923fd8cc2c6795
-  branch: flavorjones/coworker-api
+  revision: 4271a8e1f02f0f35d749c938bf4dcccf902b4190
   specs:
     audits1984 (0.1.7)
       console1984
@@ -23,7 +22,7 @@ GIT
 
 GIT
   remote: https://github.com/basecamp/queenbee-plugin
-  revision: 14312a940471e20617b38cdec7c092a01567d18b
+  revision: c0119be5940edb3739d4bb591c1a5c7064881638
   specs:
     queenbee (3.2.0)
       activeresource
@@ -64,7 +63,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 12e24eaf2f0a9613e015653f013dd131317d9bf5
+  revision: 75f9e28379ac7418b82fa950cfa81f6147275308
   branch: main
   specs:
     actioncable (8.2.0.alpha)
@@ -95,7 +94,7 @@ GIT
       rack-session (>= 1.0.1)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.2)
-      rails-html-sanitizer (~> 1.6)
+      rails-html-sanitizer (~> 1.7)
       useragent (~> 0.16)
     actiontext (8.2.0.alpha)
       action_text-trix (~> 2.1.16)
@@ -110,7 +109,7 @@ GIT
       builder (~> 3.1)
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
-      rails-html-sanitizer (~> 1.6)
+      rails-html-sanitizer (~> 1.7)
     activejob (8.2.0.alpha)
       activesupport (= 8.2.0.alpha)
       globalid (>= 0.3.6)
@@ -204,7 +203,7 @@ GEM
       httpx (~> 1.6)
       jwt (>= 2)
       railties (>= 8.0)
-    action_text-trix (2.1.17)
+    action_text-trix (2.1.18)
       railties
     actionpack-xml_parser (2.0.1)
       actionpack (>= 5.0)
@@ -217,15 +216,15 @@ GEM
       activemodel (>= 7.0)
       activemodel-serializers-xml (~> 1.0)
       activesupport (>= 7.0)
-    addressable (2.8.8)
+    addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     anyway_config (2.7.2)
       ruby-next-core (~> 1.0)
     ast (2.4.3)
     autotuner (1.1.0)
     aws-eventstream (1.4.0)
-    aws-partitions (1.1226.0)
-    aws-sdk-core (3.243.0)
+    aws-partitions (1.1237.0)
+    aws-sdk-core (3.244.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
@@ -233,20 +232,20 @@ GEM
       bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.122.0)
-      aws-sdk-core (~> 3, >= 3.241.4)
+    aws-sdk-kms (1.123.0)
+      aws-sdk-core (~> 3, >= 3.244.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.215.0)
-      aws-sdk-core (~> 3, >= 3.243.0)
+    aws-sdk-s3 (1.218.0)
+      aws-sdk-core (~> 3, >= 3.244.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
     aws-sigv4 (1.12.1)
       aws-eventstream (~> 1, >= 1.0.2)
     base64 (0.3.0)
-    bcrypt (3.1.21)
+    bcrypt (3.1.22)
     bcrypt_pbkdf (1.1.2)
     benchmark (0.5.0)
-    bigdecimal (4.0.1)
+    bigdecimal (4.1.1)
     bindex (0.8.1)
     bootsnap (1.23.0)
       msgpack (~> 1.2)
@@ -346,10 +345,10 @@ GEM
       actionview (>= 7.0.0)
       activesupport (>= 7.0.0)
     jmespath (1.6.2)
-    json (2.19.2)
+    json (2.19.3)
     jwt (3.1.2)
       base64
-    kamal (2.10.1)
+    kamal (2.11.0)
       activesupport (>= 7.0)
       base64 (~> 0.2)
       bcrypt_pbkdf (~> 1.0)
@@ -367,11 +366,11 @@ GEM
       logger (~> 1.6)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
-    lexxy (0.9.0.beta)
+    lexxy (0.9.5.beta)
       rails (>= 8.0.2)
     lint_roller (1.1.0)
     logger (1.7.0)
-    loofah (2.25.0)
+    loofah (2.25.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
     mail (2.9.0)
@@ -385,7 +384,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    minitest (6.0.2)
+    minitest (6.0.3)
       drb (~> 2.0)
       prism (~> 1.5)
     mission_control-jobs (1.1.0)
@@ -399,7 +398,7 @@ GEM
       stimulus-rails
       turbo-rails
     mittens (0.3.1)
-    mocha (3.0.2)
+    mocha (3.1.0)
       ruby2_keywords (>= 0.0.5)
     msgpack (1.8.0)
     multi_json (1.19.1)
@@ -407,7 +406,7 @@ GEM
       uri (>= 0.11.1)
     net-http-persistent (4.0.8)
       connection_pool (>= 2.2.4, < 4)
-    net-imap (0.6.3)
+    net-imap (0.6.4)
       date
       net-protocol
     net-pop (0.1.2)
@@ -420,23 +419,23 @@ GEM
       net-ssh (>= 5.0.0, < 8.0.0)
     net-smtp (0.5.1)
       net-protocol
-    net-ssh (7.3.0)
+    net-ssh (7.3.2)
     nio4r (2.7.5)
-    nokogiri (1.19.1-aarch64-linux-gnu)
+    nokogiri (1.19.3-aarch64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.19.1-aarch64-linux-musl)
+    nokogiri (1.19.3-aarch64-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.19.1-arm-linux-gnu)
+    nokogiri (1.19.3-arm-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.19.1-arm-linux-musl)
+    nokogiri (1.19.3-arm-linux-musl)
       racc (~> 1.4)
-    nokogiri (1.19.1-arm64-darwin)
+    nokogiri (1.19.3-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.19.1-x86_64-darwin)
+    nokogiri (1.19.3-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.19.1-x86_64-linux-gnu)
+    nokogiri (1.19.3-x86_64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.19.1-x86_64-linux-musl)
+    nokogiri (1.19.3-x86_64-linux-musl)
       racc (~> 1.4)
     openssl (4.0.0)
     os (1.1.4)
@@ -494,15 +493,15 @@ GEM
     psych (5.3.1)
       date
       stringio
-    public_suffix (7.0.2)
+    public_suffix (7.0.5)
     puma (7.2.0)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
-    rack (3.2.5)
+    rack (3.2.6)
     rack-mini-profiler (4.0.1)
       rack (>= 1.2.0)
-    rack-session (2.1.1)
+    rack-session (2.1.2)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
     rack-test (2.2.0)
@@ -571,7 +570,7 @@ GEM
     ruby2_keywords (0.0.5)
     rubyzip (3.2.2)
     securerandom (0.4.1)
-    selenium-webdriver (4.41.0)
+    selenium-webdriver (4.43.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
@@ -600,7 +599,7 @@ GEM
       activejob (>= 7.2)
       activerecord (>= 7.2)
       railties (>= 7.2)
-    solid_queue (1.3.2)
+    solid_queue (1.4.0)
       activejob (>= 7.1)
       activerecord (>= 7.1)
       concurrent-ruby (>= 1.3.1)
@@ -627,13 +626,13 @@ GEM
       railties (>= 6.0.0)
     stringio (3.2.0)
     thor (1.5.0)
-    thruster (0.1.19)
-    thruster (0.1.19-aarch64-linux)
-    thruster (0.1.19-arm64-darwin)
-    thruster (0.1.19-x86_64-darwin)
-    thruster (0.1.19-x86_64-linux)
-    timeout (0.6.0)
-    trilogy (2.10.0)
+    thruster (0.1.20)
+    thruster (0.1.20-aarch64-linux)
+    thruster (0.1.20-arm64-darwin)
+    thruster (0.1.20-x86_64-darwin)
+    thruster (0.1.20-x86_64-linux)
+    timeout (0.6.1)
+    trilogy (2.11.1)
       bigdecimal
     tsort (0.2.0)
     tzinfo (2.0.6)
@@ -646,7 +645,7 @@ GEM
     web-push (3.1.0)
       jwt (~> 3.0)
       openssl (>= 3.0)
-    webmock (3.26.1)
+    webmock (3.26.2)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -707,7 +706,7 @@ DEPENDENCIES
   audits1984!
   autotuner
   aws-sdk-s3
-  bcrypt (~> 3.1.7)
+  bcrypt (~> 3.1.22)
   benchmark
   bootsnap
   brakeman
@@ -724,7 +723,7 @@ DEPENDENCIES
   jbuilder
   kamal
   letter_opener
-  lexxy (= 0.9.0.beta)
+  lexxy (= 0.9.5.beta)
   mission_control-jobs
   mittens
   mocha
@@ -745,12 +744,12 @@ DEPENDENCIES
   sentry-ruby
   solid_cable (>= 3.0)
   solid_cache (~> 1.0)
-  solid_queue (~> 1.3)
+  solid_queue (~> 1.4)
   sqlite3 (>= 2.0)
   stackprof
   stimulus-rails
   thruster
-  trilogy (~> 2.10)
+  trilogy (~> 2.11)
   turbo-rails!
   useragent!
   vcr
