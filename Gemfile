@@ -13,7 +13,7 @@ gem "turbo-rails", github: "hotwired/turbo-rails", branch: "offline-cache"
 # Deployment and drivers
 gem "bootsnap", require: false
 gem "kamal", require: false
-gem "puma", ">= 5.0"
+gem "puma", "~> 7.2", ">= 7.2.1"
 gem "solid_cable", ">= 3.0"
 gem "solid_cache", "~> 1.0"
 gem "solid_queue", "~> 1.4"
@@ -27,7 +27,7 @@ gem "geared_pagination", "~> 1.2"
 gem "rqrcode"
 gem "rouge"
 gem "jbuilder"
-gem "lexxy", "0.9.5.beta"
+gem "lexxy", "0.9.14.beta"
 gem "image_processing", "~> 1.14"
 gem "platform_agent"
 gem "aws-sdk-s3", require: false
@@ -59,8 +59,9 @@ end
 
 group :test do
   gem "capybara"
-  gem "selenium-webdriver"
-  gem "webmock"
-  gem "vcr"
+  gem "minitest-reporters", require: false
   gem "mocha"
+  gem "selenium-webdriver"
+  gem "vcr"
+  gem "webmock"
 end
