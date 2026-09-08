@@ -62,13 +62,35 @@ Flag for the report:
 - **`Gemfile.lock` / `package.json`** - dependency changes, so `bundle install`
   / `npm install` are needed.
 - **`config/deploy.yml`, `.kamal/`, `Dockerfile`** - deploy-affecting changes.
-- Commit messages or `docs/` changes that mention a required action, backfill,
-  upgrade step, or breaking change. There is no CHANGELOG file in this repo -
-  the commit log and `docs/` are the source of truth. Search with:
+- Release notes, commit messages, or `docs/` changes that mention a required
+  action, backfill, upgrade step, or breaking change. Search the log with:
 
 ```bash
 git log $BEFORE..main --grep='migrat\|backfill\|manual\|breaking\|upgrade\|maintenance' -i --oneline
 ```
+
+### Upstream release notes
+
+There is no CHANGELOG file in this repo. The changelog lives in GitHub
+releases at https://github.com/basecamp/fizzy/releases - read them with `gh`.
+Releases are tagged `fizzy@<short sha>` per deployed commit, and each body has
+a "What's Changed" list of merged PRs.
+
+Print the notes for every release landed in this sync:
+
+```bash
+for tag in $(gh release list --repo basecamp/fizzy --limit 50 --json tagName -q '.[].tagName'); do
+  sha=${tag#fizzy@}
+  git cat-file -e "$sha^{commit}" 2>/dev/null || continue
+  git merge-base --is-ancestor "$sha" main 2>/dev/null || continue
+  git merge-base --is-ancestor "$sha" $BEFORE 2>/dev/null && continue
+  gh release view "$tag" --repo basecamp/fizzy
+done
+```
+
+Raise `--limit` if the oldest listed release is still newer than `$BEFORE`.
+These notes are the best source for the "Notable changes" section of the
+report and for spotting announced manual steps.
 
 For every new file under `script/migrations/` or `script/maintenance/`, read it
 and summarize in one line what it does and whether it looks required.
