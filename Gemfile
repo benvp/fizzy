@@ -26,13 +26,14 @@ gem "thruster", require: false
 gem "trilogy", "~> 2.13"
 
 # Features
+gem "rails-active_search", "~> 0.1.0"
 gem "bcrypt", "~> 3.1.22"
 gem "geared_pagination", "~> 1.2"
 gem "rqrcode"
 gem "rouge"
 gem "jbuilder"
-gem "lexxy", "0.9.31"
-gem "image_processing", "~> 2.0"
+gem "lexxy", "0.9.32"
+gem "image_processing", "~> 2.1"
 gem "ruby-vips", require: false # image_processing 2 no longer depends on it; Active Storage loads it itself
 gem "platform_agent"
 gem "aws-sdk-s3", require: false
