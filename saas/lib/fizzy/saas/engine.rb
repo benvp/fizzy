@@ -5,7 +5,10 @@ require_relative "authorization"
 require_relative "gvl_instrumentation"
 require_relative "cell"
 require_relative "unprocessable_attachments"
+require_relative "oauth_audit_log"
 require_relative "sentry_sql_redaction"
+require_relative "job_memory"
+require_relative "client_geo_logging"
 require_relative "../../rails_ext/active_record_tasks_database_tasks.rb"
 
 module Fizzy
@@ -46,6 +49,12 @@ module Fizzy
         app.config.middleware.insert_before ActionDispatch::RemoteIp, TrackTrueClientIp
       end
 
+      initializer "fizzy_saas.reviewer_sign_in" do |app|
+        app.config.x.reviewer_sign_in.email_address = ENV["FIZZY_REVIEWER_SIGN_IN_EMAIL"]
+        app.config.x.reviewer_sign_in.code_digest = ENV["FIZZY_REVIEWER_SIGN_IN_CODE_DIGEST"]
+        app.config.x.reviewer_sign_in.code_digests = ENV["FIZZY_REVIEWER_SIGN_IN_CODES"]
+      end
+
       initializer "fizzy_saas.gvl_instrumentation" do |app|
         app.config.middleware.insert_before(Rack::Runtime, GvlInstrumentation)
       end
@@ -81,6 +90,10 @@ module Fizzy
         end
       end
 
+      initializer "fizzy_saas.logging.job_memory" do
+        ActiveSupport.on_load(:active_job) { include JobMemory }
+      end
+
       initializer "fizzy_saas.logging.session" do |app|
         ActiveSupport.on_load(:action_controller_base) do
           before_action do
@@ -93,6 +106,16 @@ module Fizzy
             end
           end
         end
+      end
+
+      initializer "fizzy_saas.logging.client_geo" do |app|
+        ActiveSupport.on_load(:action_controller_base) { include ClientGeoLogging }
+      end
+
+      # OAuth lifecycle events (Oauth::Audit) go to the structured log, which
+      # production writes to Loki.
+      initializer "fizzy_saas.logging.oauth_audit" do |app|
+        Rails.event.subscribe(OauthAuditLog.new(app.config.structured_logging.logger)) { |event| event[:name].start_with?("oauth.") }
       end
 
       # Load test mocks automatically in test environment
@@ -184,6 +207,9 @@ module Fizzy
         require "yabeda/hot_cell"
         Yabeda::HotCell.install!
 
+        require "yabeda/oauth"
+        Yabeda::Oauth.install!
+
         require_relative "metrics"
       end
 
@@ -209,6 +235,11 @@ module Fizzy
         ::Identity.include Authorization::Identity, Identity::Devices
         ::Session.include Session::Devices
         ::Signup.prepend Signup
+        Sessions::MagicLinksController.prepend Sessions::ReviewerSignIn
+        ::User.prepend User::ReviewerEmailAddressLock
+        ::Oauth::Availability.admit_as_reviewer Identity::ReviewerSignIn.method(:reviewer?)
+        Users::EmailAddressesController.include Users::ReviewerEmailAddressLock
+        UsersController.include Users::ReviewerMembershipLock
         ApplicationController.include Authorization::Controller
         CardsController.include(Card::StorageLimited::Creation)
         Cards::CommentsController.include(Card::StorageLimited::Commenting)
@@ -220,6 +251,9 @@ module Fizzy
 
         # Default to local dev QB token if not set
         Queenbee::ApiToken.token = ENV.fetch("QUEENBEE_API_TOKEN") { "69a4cfb8705913e6323f7b4c0c0cff9bd8df37da532f4375b85e9655b8100bb023591b48d308205092aa0a04dd28cb6c62d6798364a6f44cc1e675814eb148a1" } # gitleaks:allow development-only token
+        # Accepted alongside the current token while a rotation is under way. Outside one it holds the
+        # same value; unset (development, test) it accepts nothing extra.
+        Queenbee::ApiToken.previous_token = ENV["QUEENBEE_API_TOKEN_PREVIOUS"]
 
         Subscription::SHORT_NAMES.each do |short_name|
           const_name = "#{short_name}Subscription"

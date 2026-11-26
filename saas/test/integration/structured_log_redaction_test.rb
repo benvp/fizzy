@@ -118,7 +118,7 @@ class Fizzy::Saas::StructuredLogRedactionTest < ActionDispatch::IntegrationTest
       ActiveRecord::Base.cache { 2.times { assert MagicLink.find_by(code: CODE) } }
       assert_raises(ActiveRecord::RecordNotUnique) { identities(:kevin).magic_links.new(code: CODE, expires_at: 1.minute.from_now).save!(validate: false) }
       transaction.finish
-      Sentry.capture_exception(ActiveRecord::RecordNotUnique.new("Trilogy::ProtocolError: 1062: Duplicate entry '#{CODE}' for key 'magic_links.index_magic_links_on_code'"))
+      Sentry.capture_exception(ActiveRecord::RecordNotUnique.new("Mysql2::Error: Duplicate entry '#{CODE}' for key 'magic_links.index_magic_links_on_code'"))
 
       assert sentry_events.many?
       assert_no_secret CODE, sentry_events.map { |event| event.to_h.to_json }
@@ -139,7 +139,7 @@ class Fizzy::Saas::StructuredLogRedactionTest < ActionDispatch::IntegrationTest
     unclosed = Sentry::Breadcrumb.new(category: "sql.active_record", data: { sql: "SELECT * FROM magic_links WHERE purpose = '0' AND code = '#{CODE}" })
     assert_no_secret CODE, [ config.before_breadcrumb.call(unclosed, {}).data[:sql] ]
 
-    error = ActiveRecord::RecordNotUnique.new("Trilogy::ProtocolError: 1062: Duplicate entry '#{CODE}' for key 'magic_links.index_magic_links_on_code'")
+    error = ActiveRecord::RecordNotUnique.new("Mysql2::Error: Duplicate entry '#{CODE}' for key 'magic_links.index_magic_links_on_code'")
     event = Sentry::ErrorEvent.new(configuration: config).tap { |event| event.add_exception_interface(error, mechanism: Sentry::Mechanism.new) }
     assert_no_secret CODE, [ config.before_send.call(event, {}).exception.values.map(&:value).inspect ]
 
@@ -159,6 +159,34 @@ class Fizzy::Saas::StructuredLogRedactionTest < ActionDispatch::IntegrationTest
     assert_equal "https://app.fizzy.do/1234567/join/[FILTERED]", event.request.url
     assert_equal "https://app.fizzy.do/public/boards/[FILTERED]", event.request.headers["Referer"]
     assert_equal "/1234567/join/[FILTERED]", event.transaction
+  end
+
+  test "a search's words are filtered from the structured request line's URL, query and referrer" do
+    sign_in_as :kevin
+    slug = accounts("37s").slug
+
+    lines = structured_log_lines do
+      get search_path(q: "allotment", script_name: slug), headers: { "Referer" => "https://app.fizzy.do#{slug}/search?q=allotment" }
+    end
+
+    assert_response :success
+    line = JSON.parse(lines.find { |line| line.include?("SearchesController") })
+    filtered = { "q" => "[FILTERED]" }
+    assert_equal filtered, Rack::Utils.parse_query(line.dig("url", "query"))
+    assert_equal filtered, Rack::Utils.parse_query(URI(line.dig("url", "full")).query)
+    assert_equal filtered, Rack::Utils.parse_query(URI(line.dig("http", "request", "referrer")).query)
+    assert_no_secret "allotment", lines
+  end
+
+  test "Sentry reports a search's Referer without its words" do
+    config = Sentry::Configuration.new
+    Fizzy::Saas::SentrySqlRedaction.install(config)
+
+    event = Sentry::ErrorEvent.new(configuration: config)
+    event.rack_env = Rack::MockRequest.env_for("https://app.fizzy.do/1234567/cards/1", "HTTP_REFERER" => "https://app.fizzy.do/1234567/search?q=allotment")
+    event = config.before_send.call(event, {})
+
+    assert_equal({ "q" => "[FILTERED]" }, Rack::Utils.parse_query(URI(event.request.headers["Referer"]).query))
   end
 
   test "opening a join link logs no code in its path" do

@@ -95,6 +95,22 @@ Rails.application.configure do
     /.*\.nip\.io/  # nip.io for mobile apps
   ]
 
+  # OAuth is lit in development; preview the dark posture with OAUTH_DARK=1,
+  # paused issuance with OAUTH_PAUSED=1, and the preview gate with
+  # CONNECTED_APPS_PREVIEW=true, as production reads it. See Oauth::Availability
+  # and script/dev/oauth_states.
+  config.x.oauth.acceptance_enabled = ENV["OAUTH_DARK"].blank?
+  config.x.oauth.issuance_enabled = ENV["OAUTH_PAUSED"].blank?
+  config.after_initialize do
+    config.x.oauth.connected_apps_preview = Oauth::Availability.connected_apps_preview_from(ENV)
+  end
+  config.x.oauth.cimd_enabled = true
+  config.x.oauth.cimd_allowed_hosts = %w[ mcp.claude.ai claude.ai claude.com chatgpt.com www.perplexity.ai platform.muse.ai ]
+
+  # The open tier of metadata documents is on in development, and with it the
+  # fetch lease (Oauth::ClientMetadata::FetchLease).
+  config.x.oauth.cimd_open_registration = true
+
   # Canonical host for mailer URLs (emails always link here, not personal Tailscale URLs)
   config.action_mailer.default_url_options = { host: "#{config.hosts.first}:3006" }
 end

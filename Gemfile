@@ -23,7 +23,8 @@ gem "solid_cache", "~> 1.0"
 gem "solid_queue", "~> 1.7"
 gem "sqlite3", ">= 2.0"
 gem "thruster", require: false
-gem "trilogy", "~> 2.13"
+gem "mysql2", "~> 0.5"
+gem "tzinfo-data" # Bundled zone data; the base image's tzdata package lags IANA
 
 # Features
 gem "rails-active_search", "~> 0.1.0"
@@ -32,7 +33,7 @@ gem "geared_pagination", "~> 1.2"
 gem "rqrcode"
 gem "rouge"
 gem "jbuilder"
-gem "lexxy", "1.0.1"
+gem "lexxy", "1.0.4"
 gem "image_processing", "~> 2.2"
 gem "ruby-vips", require: false # image_processing 2 no longer depends on it; Active Storage loads it itself
 gem "platform_agent"
@@ -40,6 +41,7 @@ gem "aws-sdk-s3", require: false
 gem "web-push"
 gem "net-http-persistent"
 gem "surfguard", bc: "surfguard" # The SSRF address policy behind webhook and push delivery
+gem "public_suffix" # Registrable domains, for the budgets of metadata document clients nobody allowlisted
 gem "zip_kit"
 gem "mittens"
 gem "useragent", bc: "useragent"
